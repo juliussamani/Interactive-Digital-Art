@@ -1,0 +1,56 @@
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+
+PImage HS;
+
+Minim minim;
+AudioPlayer AOTL;
+FFT fft;
+
+void setup()
+{
+
+size(500, 500);
+  HS = loadImage("HomeScreen.jpg"); 
+  image(HS,0,0);
+  
+minim = new Minim(this);
+AOTL = minim.loadFile("AOTL.wav", 4096);
+AOTL.play();
+fft = new FFT(AOTL.bufferSize(), AOTL.sampleRate());
+}
+
+void draw()
+{
+  
+  if(key == '1')
+  {
+background(0);
+
+fft.forward(AOTL.mix);
+stroke(random(255), random(255), random(255), random(255));
+for(int i = 0; i < fft.specSize(); i++) { line(i, height, i, height - fft.getBand(i)*(mouseX)); } stroke(random(255)); 
+  }
+  else if(key == '2')
+  {
+background(255);
+frameRate(10);
+fft.forward(AOTL.mix);
+stroke(random(255), random(255), random(255), random(255));
+for(int i = 0; i < fft.specSize(); i++) { ellipse(i, height,i, height - fft.getBand(i)*10); } stroke(random(255)); 
+  }
+   else if(key == '3')
+  {
+background(0);
+
+fft.forward(AOTL.mix);
+noStroke();
+fill(random(255), random(255), random(255), random(255));
+for(int i = 0; i < fft.specSize(); i++) { circle(i, (random(height)), (random(height)) - fft.getBand(i)*10); } stroke(random(255)); 
+  }
+  else
+  {
+    HS = loadImage("HomeScreen.jpg"); 
+    image(HS,0,0);
+  }
+}
